@@ -37,6 +37,10 @@ jobs:
           pnpm exec vitest run --project unit
           packages/lexical/src/__tests__/unit
           packages/lexical-y/src/__tests__/unit
+      - name: Formatting diagnostics
+        if: always()
+        run: |
+          pnpm exec prettier packages/lexical/src/LexicalUpdates.ts | diff -u packages/lexical/src/LexicalUpdates.ts -
       - name: Code quality
         if: always()
         run: pnpm run ci-check
