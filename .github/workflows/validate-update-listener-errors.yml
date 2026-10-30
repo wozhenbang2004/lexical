@@ -1,0 +1,37 @@
+name: Validate update listener errors
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Branch or commit to validate
+        required: true
+        default: repro/update-listener-errors
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      CI: true
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.ref }}
+          persist-credentials: false
+      - uses: ./.github/actions/setup-pnpm
+        with:
+          node-version: 24.x
+      - name: Core and collaboration error regressions
+        run: >-
+          pnpm exec vitest run --project unit
+          packages/lexical/src/__tests__/unit/LexicalUpdateErrors.test.ts
+          packages/lexical/src/__tests__/unit/LexicalUpdateListenerIsolation.test.ts
+          packages/lexical-y/src/__tests__/unit/UpdateErrors.test.ts
+          packages/lexical-y/src/__tests__/unit/regressions/ThrowingUpdateListener.test.ts
+      - name: Code quality
+        if: always()
+        run: pnpm run ci-check
