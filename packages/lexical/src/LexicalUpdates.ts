@@ -951,11 +951,6 @@ export function triggerListeners<T extends keyof MapListeners>(
     for (const [listener, unregister] of listeners) {
       try {
         if (unregister) {
-          if (type === 'update' && listenerMap.has(listener)) {
-            // A cleanup that throws, or whose next listener throws, has still
-            // been called. Do not call it again on the next commit.
-            listenerMap.set(listener, undefined);
-          }
           unregister();
         }
         // TypeScript's void-return rule lets a `=> void` callback return any value,
