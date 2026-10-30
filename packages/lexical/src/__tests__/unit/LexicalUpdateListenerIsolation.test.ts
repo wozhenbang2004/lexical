@@ -39,7 +39,7 @@ function setup(rethrows = true) {
 function commit(editor: LexicalEditor, text: string) {
   editor.update(
     () => {
-      ($getRoot().getFirstDescendantOrThrow() as TextNode).setTextContent(text);
+      ($getRoot().getFirstDescendant() as TextNode).setTextContent(text);
     },
     {discrete: true},
   );
