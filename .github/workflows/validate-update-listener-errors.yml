@@ -32,6 +32,11 @@ jobs:
           packages/lexical/src/__tests__/unit/LexicalUpdateListenerIsolation.test.ts
           packages/lexical-y/src/__tests__/unit/UpdateErrors.test.ts
           packages/lexical-y/src/__tests__/unit/regressions/ThrowingUpdateListener.test.ts
+      - name: Related core and collaboration unit suites
+        run: >-
+          pnpm exec vitest run --project unit
+          packages/lexical/src/__tests__/unit
+          packages/lexical-y/src/__tests__/unit
       - name: Code quality
         if: always()
         run: pnpm run ci-check
